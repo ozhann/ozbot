@@ -10,7 +10,7 @@ client.on('ready', () => {
 
 const PREFIX = '$';
 
-client.on('message', msg => {
+client.on('message', async msg => {
   if (msg.channel.id === '776449477757632535' && msg.content === 'naber') {
     // reply with mention
     msg.reply('iyilik, senden?');
@@ -40,6 +40,18 @@ client.on('message', msg => {
       } else {
         message.channel.send('That member was not found.');
       }
-    }
+    } else if (CMD_NAME === 'ban') {
+        if (!message.member.hasPermission('BAN_MEMBERS')) {
+          return message.reply('You do not have permissions to use that command');
+        }
+        if (args.length === 0) return message.reply('Please provide an ID');
+        
+        
+        try {
+            const user = await message.guild.members.ban(args[0])
+            message.channel.send('User was banned successfully')
+        } catch (err) {
+            message.channel.send('An error occured. Either I do not have permissions or the user was not found.')
+        }
   }
 });
