@@ -41,17 +41,61 @@ client.on('message', async msg => {
         message.channel.send('That member was not found.');
       }
     } else if (CMD_NAME === 'ban') {
-        if (!message.member.hasPermission('BAN_MEMBERS')) {
-          return message.reply('You do not have permissions to use that command');
-        }
-        if (args.length === 0) return message.reply('Please provide an ID');
-        
-        
-        try {
-            const user = await message.guild.members.ban(args[0])
-            message.channel.send('User was banned successfully')
-        } catch (err) {
-            message.channel.send('An error occured. Either I do not have permissions or the user was not found.')
-        }
+      if (!message.member.hasPermission('BAN_MEMBERS')) {
+        return message.reply('You do not have permissions to use that command');
+      }
+      if (args.length === 0) return message.reply('Please provide an ID');
+
+      try {
+        const user = await message.guild.members.ban(args[0]);
+        message.channel.send('User was banned successfully');
+      } catch (err) {
+        message.channel.send(
+          'An error occured. Either I do not have permissions or the user was not found.'
+        );
+      }
+    }
+  }
+});
+
+client.on('messageReactionAdd', (reaction, user) => {
+  const { name } = reaction.emoji;
+  const member = reaction.message.guild.members.cache.get(user.id);
+  if (reaction.message.id === '738666523408990258') {
+    switch (name) {
+      case '🍎':
+        member.roles.add('738664659103776818');
+        break;
+      case '🍌':
+        member.roles.add('738664632838782998');
+        break;
+      case '🍇':
+        member.roles.add('738664618511171634');
+        break;
+      case '🍑':
+        member.roles.add('738664590178779167');
+        break;
+    }
+  }
+});
+
+client.on('messageReactionRemove', (reaction, user) => {
+  const { name } = reaction.emoji;
+  const member = reaction.message.guild.members.cache.get(user.id);
+  if (reaction.message.id === '738666523408990258') {
+    switch (name) {
+      case '🍎':
+        member.roles.remove('738664659103776818');
+        break;
+      case '🍌':
+        member.roles.remove('738664632838782998');
+        break;
+      case '🍇':
+        member.roles.remove('738664618511171634');
+        break;
+      case '🍑':
+        member.roles.remove('738664590178779167');
+        break;
+    }
   }
 });
